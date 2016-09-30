@@ -24,7 +24,12 @@ import com.intellij.javaee.run.configuration.CommonModel;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.projectRoots.JavaSdk;
+import com.intellij.openapi.projectRoots.SdkTypeId;
+import com.intellij.openapi.roots.ui.configuration.JdkComboBox;
+import com.intellij.openapi.roots.ui.configuration.projectRoot.ProjectSdksModel;
 import com.intellij.openapi.util.Comparing;
+import com.intellij.openapi.util.Condition;
 import com.intellij.packaging.artifacts.Artifact;
 import com.intellij.packaging.impl.run.BuildArtifactsBeforeRunTaskProvider;
 import com.intellij.ui.PanelWithAnchor;
@@ -39,6 +44,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -57,6 +63,7 @@ public class AppEngineRunConfigurationEditor extends SettingsEditor<CommonModel>
   private JBLabel myServerParametersLabel;
   private final Project myProject;
   private Artifact myLastSelectedArtifact;
+  private ProjectSdksModel projectSdksModel;
   private JComponent anchor;
   private JTextField authDomain;
   private JTextField storagePath;
@@ -72,6 +79,8 @@ public class AppEngineRunConfigurationEditor extends SettingsEditor<CommonModel>
   private JComboBox devappserverLogLevel;
   private JCheckBox skipSdkUpdateCheck;
   private JTextField gcsBucketName;
+  private JdkComboBox jdkComboBox;
+
   // TODO(joaomartins): Change "Advanced Settings" to a collapsable drop down, like Before Launch.
 
   public AppEngineRunConfigurationEditor(Project project) {
@@ -137,6 +146,7 @@ public class AppEngineRunConfigurationEditor extends SettingsEditor<CommonModel>
     devappserverLogLevel.setSelectedItem(serverModel.getDevAppserverLogLevel());
     skipSdkUpdateCheck.setSelected(serverModel.getSkipSdkUpdateCheck());
     gcsBucketName.setText(serverModel.getDefaultGcsBucketName());
+    jdkComboBox.setSelectedJdk(serverModel.getDevAppServerJdk());
   }
 
   protected void applyEditorTo(CommonModel commonModel) throws ConfigurationException {
@@ -163,6 +173,7 @@ public class AppEngineRunConfigurationEditor extends SettingsEditor<CommonModel>
     serverModel.setDevAppserverLogLevel((String) devappserverLogLevel.getSelectedItem());
     serverModel.setSkipSdkUpdateCheck(skipSdkUpdateCheck.isSelected());
     serverModel.setDefaultGcsBucketName(gcsBucketName.getText());
+    serverModel.setDevAppServerJdk(jdkComboBox.getSelectedJdk());
   }
 
   private Integer validateInteger(String intText, String description)
@@ -200,5 +211,16 @@ public class AppEngineRunConfigurationEditor extends SettingsEditor<CommonModel>
     myWebArtifactToDeployLabel.setAnchor(anchor);
     myPortLabel.setAnchor(anchor);
     myServerParametersLabel.setAnchor(anchor);
+  }
+
+  private void createUIComponents() {
+    projectSdksModel = new ProjectSdksModel();
+    projectSdksModel.reset(null);
+    jdkComboBox = new JdkComboBox(projectSdksModel, new Condition<SdkTypeId>() {
+      @Override
+      public boolean value(SdkTypeId id) {
+        return JavaSdk.getInstance().equals(id);
+      }
+    });
   }
 }
