@@ -44,7 +44,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -213,6 +212,8 @@ public class AppEngineRunConfigurationEditor extends SettingsEditor<CommonModel>
     myServerParametersLabel.setAnchor(anchor);
   }
 
+  // Suppress checkstyle warnings for UI framework required method name
+  @SuppressWarnings("checkstyle:abbreviationaswordinname")
   private void createUIComponents() {
     projectSdksModel = new ProjectSdksModel();
     projectSdksModel.reset(null);
