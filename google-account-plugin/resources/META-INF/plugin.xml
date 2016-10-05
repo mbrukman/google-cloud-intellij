@@ -13,6 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
 <idea-plugin version="2">
   <id>com.google.gct.login</id>
   <name>Google Account</name>
@@ -37,15 +38,6 @@
 
   <project-components>
   </project-components>
-
-  <actions>
-    <action id="GoogleLogin.LoginService"
-            class="com.google.cloud.tools.intellij.login.ui.GoogleLoginAction"
-            text="Google Login">
-      <add-to-group group-id="MainToolBar" anchor="last"  />
-      <add-to-group group-id="NavBarToolBar" anchor="last"  />
-    </action>
-  </actions>
 
   <extensions defaultExtensionNs="com.intellij">
     <applicationConfigurable groupId="google" id="google.settings"
