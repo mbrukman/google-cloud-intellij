@@ -39,12 +39,7 @@
   </project-components>
 
   <actions>
-    <action id="GoogleLogin.LoginService"
-            class="com.google.cloud.tools.intellij.login.ui.GoogleLoginAction"
-            text="Google Login">
-      <add-to-group group-id="MainToolBar" anchor="last"  />
-      <add-to-group group-id="NavBarToolBar" anchor="last"  />
-    </action>
+        <!--Add Actions here.-->
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
